@@ -39,9 +39,9 @@ public class Student {
 
 public class Main {
     public static void main(String[] args) {
-        Student s1 = new Student("Alice Johnson", 20, "Computer Science", 85, 90, 87);
-        Student s2 = new Student("Bob Smith", 22, "Mathematics", 65, 70, 68);
-        Student s3 = new Student("Carla Martinez", 21, "Engineering", 55, 60, 58);
+        Student s1 = new Student("Miguel Angelo", 20, "Computer Science", 85, 90, 87);
+        Student s2 = new Student("Van Sarappudin", 22, "Mathematics", 65, 70, 68);
+        Student s3 = new Student("Coco Martin", 21, "Engineering", 55, 60, 58);
 
         Student[] students = {s1, s2, s3};
         int passingCount = 0;
