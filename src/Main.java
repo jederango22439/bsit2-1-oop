@@ -1,63 +1,74 @@
-public class Student {
-    private String name;
-    private int age;
-    private String course;
-    private double grade1, grade2, grade3;
+public class BankAccount {
+static String bankName = "Liceo Bank";
+static int totalAccounts = 0;
+static double interestRate = 0.03;
 
-    public Student(String name, int age, String course, double grade1, double grade2, double grade3) {
-        this.name = name;
-        this.age = age;
-        this.course = course;
-        this.grade1 = grade1;
-        this.grade2 = grade2;
-        this.grade3 = grade3;
-    }
+private String accountNumber;
+private String accountHolderName;
+private double balance;
 
-    public void displayInfo() {
-        System.out.println("Name   : " + name);
-        System.out.println("Age    : " + age);
-        System.out.println("Course : " + course);
-    }
-
-    public double calculateAverage() {
-        return (grade1 + grade2 + grade3) / 3;
-    }
-
-    public String getLetterGrade() {
-        double avg = calculateAverage();
-        if (avg >= 90) return "A";
-        else if (avg >= 80) return "B";
-        else if (avg >= 70) return "C";
-        else if (avg >= 60) return "D";
-        else return "F";
-    }
-
-    public boolean isPassing() {
-        return calculateAverage() >= 70;
-    }
+public static String generateAccountNumber() {
+totalAccounts++;
+return String.format("ACC%03d", totalAccounts);
 }
-public class Main {
-    public static void main(String[] args) {
-        Student s1 = new Student("Miguel Angelo", 20, "Computer Science", 85, 90, 87);
-        Student s2 = new Student("France Audrey", 22, "Mathematics", 65, 70, 68);
-        Student s3 = new Student("Iniego Suarez", 21, "Engineering", 55, 60, 58);
 
-        Student[] students = {s1, s2, s3};
-        int passingCount = 0;
+public BankAccount(String accountHolderName, double initialBalance) {
+this.accountHolderName = accountHolderName;
+this.balance = initialBalance;
+this.accountNumber = generateAccountNumber();
+}
 
-        for (Student s : students) {
-            s.displayInfo();
-            double avg = s.calculateAverage();
-            System.out.printf("Average Grade : %.2f\n", avg);
-            System.out.println("Letter Grade  : " + s.getLetterGrade());
-            System.out.println("Status        : " + (s.isPassing() ? "PASSING" : "FAILING"));
-            System.out.println("----------------------------------");
+public void deposit(double amount) {
+balance += amount;
+System.out.println(accountHolderName + " deposited $" + amount + ". New balance: $" + balance);
+}
 
-            if (s.isPassing()) {
-                passingCount++;
-            }
-        }
+public void withdraw(double amount) {
+if (balance >= amount) {
+balance -= amount;
+System.out.println(accountHolderName + " withdrew $" + amount + ". New balance: $" + balance);
+} else {
+System.out.println("Insufficient funds for " + accountHolderName);
+}
+}
 
-        System.out.println("Total Number of Students Passing: " + passingCount);
-    }
+public double calculateInterest() {
+return balance * interestRate;
+}
+
+public void displayAccountInfo() {
+System.out.println("Account Created: " + accountNumber + " for " + accountHolderName + " with initial balance: $" + balance);
+}
+
+public String getAccountHolderName() {
+return accountHolderName;
+}
+}
+
+
+
+public class BankingDemo {
+public static void main(String[] args) {
+System.out.println("Bank Name: " + BankAccount.bankName);
+System.out.println("Interest Rate: " + (BankAccount.interestRate * 100) + "%\n");
+
+BankAccount acc1 = new BankAccount("John Doe", 1000);
+BankAccount acc2 = new BankAccount("Jane Smith", 2500);
+BankAccount acc3 = new BankAccount("Bob Johnson", 500);
+
+acc1.displayAccountInfo();
+acc2.displayAccountInfo();
+acc3.displayAccountInfo();
+
+System.out.println("\n=== Account Operations ===");
+acc1.deposit(500);
+acc2.withdraw(300);
+
+System.out.println("\n=== Interest Calculation ===");
+System.out.println(acc1.getAccountHolderName() + "'s interest: $" + acc1.calculateInterest());
+System.out.println(acc2.getAccountHolderName() + "'s interest: $" + acc2.calculateInterest());
+System.out.println(acc3.getAccountHolderName() + "'s interest: $" + acc3.calculateInterest());
+
+System.out.println("\nTotal Accounts Created: " + BankAccount.totalAccounts);
+}
 }
