@@ -1,64 +1,131 @@
-public class Student {
-    private String name;
-    private int age;
-    private String course;
-    private double grade1, grade2, grade3;
+import java.util.*;
 
-    public Student(String name, int age, String course, double grade1, double grade2, double grade3) {
-        this.name = name;
-        this.age = age;
-        this.course = course;
-        this.grade1 = grade1;
-        this.grade2 = grade2;
-        this.grade3 = grade3;
+public class PostManager {
+
+    // 1. calculateEngagement
+    public int calculateEngagement(int... interactions) {
+        if (interactions == null || interactions.length == 0) {
+            return 0;
+        }
+        int total = 0;
+        for (int i : interactions) {
+            total += i;
+        }
+        return total;
     }
 
-    public void displayInfo() {
-        System.out.println("Name   : " + name);
-        System.out.println("Age    : " + age);
-        System.out.println("Course : " + course);
+    // 2. getCategoryRating
+    public String getCategoryRating(int engagementScore) {
+        if (engagementScore >= 1000) {
+            return "Viral";
+        } else if (engagementScore >= 500) {
+            return "Popular";
+        } else if (engagementScore >= 100) {
+            return "Good";
+        } else if (engagementScore >= 50) {
+            return "Low";
+        } else {
+            return "Poor";
+        }
     }
 
-    public double calculateAverage() {
-        return (grade1 + grade2 + grade3) / 3;
+    // 3. displayPostStats - Overloaded Methods
+    public void displayPostStats(String postTitle, int engagementScore) {
+        System.out.println("Post Title: " + postTitle);
+        System.out.println("Engagement Score: " + engagementScore);
     }
 
-    public String getLetterGrade() {
-        double avg = calculateAverage();
-        if (avg >= 90) return "A";
-        else if (avg >= 80) return "B";
-        else if (avg >= 70) return "C";
-        else if (avg >= 60) return "D";
-        else return "F";
+    public void displayPostStats(String postTitle, int engagementScore, String category) {
+        System.out.println("Post Title: " + postTitle);
+        System.out.println("Engagement Score: " + engagementScore);
+        System.out.println("Category: " + category);
     }
 
-    public boolean isPassing() {
-        return calculateAverage() >= 70;
-    }
-}
+    // 4. manageHashtags
+    public ArrayList<String> manageHashtags(String[] hashtags) {
+        if (hashtags == null || hashtags.length == 0) {
+            return new ArrayList<>();
+        }
 
-public class Main {
-    public static void main(String[] args) {
-        Student s1 = new Student("Miguel Angelo", 20, "Computer Science", 85, 90, 87);
-        Student s2 = new Student("Van Sarappudin", 22, "Mathematics", 65, 70, 68);
-        Student s3 = new Student("Coco Martin", 21, "Engineering", 55, 60, 58);
+        Set<String> uniqueHashtags = new HashSet<>();
+        int max = Math.min(hashtags.length, 5); // Fixed size of 5
 
-        Student[] students = {s1, s2, s3};
-        int passingCount = 0;
-
-        for (Student s : students) {
-            s.displayInfo();
-            double avg = s.calculateAverage();
-            System.out.printf("Average Grade : %.2f\n", avg);
-            System.out.println("Letter Grade  : " + s.getLetterGrade());
-            System.out.println("Status        : " + (s.isPassing() ? "PASSING" : "FAILING"));
-            System.out.println("----------------------------------");
-
-            if (s.isPassing()) {
-                passingCount++;
+        for (int i = 0; i < max; i++) {
+            if (hashtags[i] != null && !hashtags[i].isBlank()) {
+                uniqueHashtags.add(hashtags[i]);
             }
         }
 
-        System.out.println("Total Number of Students Passing: " + passingCount);
+        return new ArrayList<>(uniqueHashtags); // Convert to ArrayList
+    }
+
+    // 5. findTrendingPosts
+    public LinkedList<String> findTrendingPosts(ArrayList<String> posts, HashMap<String, Integer> postEngagement) {
+        LinkedList<String> trending = new LinkedList<>();
+        if (posts == null || postEngagement == null) return trending;
+
+        for (String post : posts) {
+            if (postEngagement.containsKey(post) && postEngagement.get(post) > 500) {
+                trending.add(post);
+            }
+        }
+        return trending;
+    }
+
+    // 6. getUniqueAuthors
+    public HashSet<String> getUniqueAuthors(String... authors) {
+        HashSet<String> uniqueAuthors = new HashSet<>();
+        if (authors != null) {
+            for (String author : authors) {
+                if (author != null && !author.isBlank()) {
+                    uniqueAuthors.add(author);
+                }
+            }
+        }
+        return uniqueAuthors;
+    }
+
+    // 7. Main Method for testing
+    public static void main(String[] args) {
+        PostManager pm = new PostManager();
+
+        // Post: "Java Programming Tips"
+        int engagement = pm.calculateEngagement(150, 75, 25); // likes, comments, shares
+        String category = pm.getCategoryRating(engagement);
+
+        // Display both versions of overloaded methods
+        System.out.println("\n--- Display Post Stats (Basic) ---");
+        pm.displayPostStats("Java Programming Tips", engagement);
+
+        System.out.println("\n--- Display Post Stats (With Category) ---");
+        pm.displayPostStats("Java Programming Tips", engagement, category);
+
+        // Hashtags
+        String[] hashtags = {"#java", "#coding", "#programming", "#java", "#tips"};
+        ArrayList<String> uniqueHashtags = pm.manageHashtags(hashtags);
+        System.out.println("\n--- Unique Hashtags ---");
+        for (String tag : uniqueHashtags) {
+            System.out.println(tag);
+        }
+
+        // Authors
+        HashSet<String> authors = pm.getUniqueAuthors("Alice", "Bob", "Alice", "Charlie", "Bob");
+        System.out.println("\n--- Unique Authors ---");
+        for (String author : authors) {
+            System.out.println(author);
+        }
+
+        // Trending Posts
+        ArrayList<String> posts = new ArrayList<>(Arrays.asList("Java Programming Tips", "Beginner Java", "Fun Coding Tricks"));
+        HashMap<String, Integer> postEngagement = new HashMap<>();
+        postEngagement.put("Java Programming Tips", 250);
+        postEngagement.put("Beginner Java", 700);
+        postEngagement.put("Fun Coding Tricks", 1200);
+
+        LinkedList<String> trendingPosts = pm.findTrendingPosts(posts, postEngagement);
+        System.out.println("\n--- Trending Posts ---");
+        for (String post : trendingPosts) {
+            System.out.println(post);
+        }
     }
 }
