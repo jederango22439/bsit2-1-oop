@@ -2,7 +2,6 @@ import java.util.*;
 
 public class PostManager {
 
-    // 1. calculateEngagement
     public int calculateEngagement(int... interactions) {
         if (interactions == null || interactions.length == 0) {
             return 0;
@@ -14,7 +13,6 @@ public class PostManager {
         return total;
     }
 
-    // 2. getCategoryRating
     public String getCategoryRating(int engagementScore) {
         if (engagementScore >= 1000) {
             return "Viral";
@@ -29,7 +27,6 @@ public class PostManager {
         }
     }
 
-    // 3. displayPostStats - Overloaded Methods
     public void displayPostStats(String postTitle, int engagementScore) {
         System.out.println("Post Title: " + postTitle);
         System.out.println("Engagement Score: " + engagementScore);
@@ -41,7 +38,6 @@ public class PostManager {
         System.out.println("Category: " + category);
     }
 
-    // 4. manageHashtags
     public ArrayList<String> manageHashtags(String[] hashtags) {
         if (hashtags == null || hashtags.length == 0) {
             return new ArrayList<>();
@@ -59,7 +55,6 @@ public class PostManager {
         return new ArrayList<>(uniqueHashtags); // Convert to ArrayList
     }
 
-    // 5. findTrendingPosts
     public LinkedList<String> findTrendingPosts(ArrayList<String> posts, HashMap<String, Integer> postEngagement) {
         LinkedList<String> trending = new LinkedList<>();
         if (posts == null || postEngagement == null) return trending;
@@ -72,7 +67,6 @@ public class PostManager {
         return trending;
     }
 
-    // 6. getUniqueAuthors
     public HashSet<String> getUniqueAuthors(String... authors) {
         HashSet<String> uniqueAuthors = new HashSet<>();
         if (authors != null) {
@@ -84,23 +78,19 @@ public class PostManager {
         }
         return uniqueAuthors;
     }
-
-    // 7. Main Method for testing
+    
     public static void main(String[] args) {
         PostManager pm = new PostManager();
 
-        // Post: "Java Programming Tips"
         int engagement = pm.calculateEngagement(150, 75, 25); // likes, comments, shares
         String category = pm.getCategoryRating(engagement);
 
-        // Display both versions of overloaded methods
         System.out.println("\n--- Display Post Stats (Basic) ---");
         pm.displayPostStats("Java Programming Tips", engagement);
 
         System.out.println("\n--- Display Post Stats (With Category) ---");
         pm.displayPostStats("Java Programming Tips", engagement, category);
 
-        // Hashtags
         String[] hashtags = {"#java", "#coding", "#programming", "#java", "#tips"};
         ArrayList<String> uniqueHashtags = pm.manageHashtags(hashtags);
         System.out.println("\n--- Unique Hashtags ---");
@@ -108,14 +98,12 @@ public class PostManager {
             System.out.println(tag);
         }
 
-        // Authors
         HashSet<String> authors = pm.getUniqueAuthors("Alice", "Bob", "Alice", "Charlie", "Bob");
         System.out.println("\n--- Unique Authors ---");
         for (String author : authors) {
             System.out.println(author);
         }
 
-        // Trending Posts
         ArrayList<String> posts = new ArrayList<>(Arrays.asList("Java Programming Tips", "Beginner Java", "Fun Coding Tricks"));
         HashMap<String, Integer> postEngagement = new HashMap<>();
         postEngagement.put("Java Programming Tips", 250);
