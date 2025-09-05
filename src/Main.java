@@ -1,64 +1,61 @@
-public class Student {
-    private String name;
-    private int age;
-    private String course;
-    private double grade1, grade2, grade3;
-
-    public Student(String name, int age, String course, double grade1, double grade2, double grade3) {
-        this.name = name;
-        this.age = age;
-        this.course = course;
-        this.grade1 = grade1;
-        this.grade2 = grade2;
-        this.grade3 = grade3;
-    }
-
-    public void displayInfo() {
-        System.out.println("Name   : " + name);
-        System.out.println("Age    : " + age);
-        System.out.println("Course : " + course);
-    }
-
-    public double calculateAverage() {
-        return (grade1 + grade2 + grade3) / 3;
-    }
-
-    public String getLetterGrade() {
-        double avg = calculateAverage();
-        if (avg >= 90) return "A";
-        else if (avg >= 80) return "B";
-        else if (avg >= 70) return "C";
-        else if (avg >= 60) return "D";
-        else return "F";
-    }
-
-    public boolean isPassing() {
-        return calculateAverage() >= 70;
-    }
-}
-
-public class Main {
+public class FoodOrderingSystem {
     public static void main(String[] args) {
-        Student s1 = new Student("Miguel Angelo", 20, "Computer Science", 85, 90, 87);
-        Student s2 = new Student("Van Sarappudin", 22, "Mathematics", 65, 70, 68);
-        Student s3 = new Student("Coco Martin", 21, "Engineering", 55, 60, 58);
+        System.out.println("=== Food Ordering System ===\n");
 
-        Student[] students = {s1, s2, s3};
-        int passingCount = 0;
+        System.out.println("Creating orders and adding items...");
 
-        for (Student s : students) {
-            s.displayInfo();
-            double avg = s.calculateAverage();
-            System.out.printf("Average Grade : %.2f\n", avg);
-            System.out.println("Letter Grade  : " + s.getLetterGrade());
-            System.out.println("Status        : " + (s.isPassing() ? "PASSING" : "FAILING"));
-            System.out.println("----------------------------------");
+        Order order1 = new Order("Alice Johnson");
+        Order order2 = new Order("Bob Smith");
+        Order order3 = new Order("Charlie Brown");
 
-            if (s.isPassing()) {
-                passingCount++;
-            }
+        try {
+            order1.addItem("Pizza", 12.99);
+            System.out.println("Item 'Pizza' added successfully");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
-        System.out.println("Total Number of Students Passing: " + passingCount);
+        try {
+            order1.addMultipleItems(
+                    new String[]{"Burger", "Fries"},
+                    8.50, 3.25
+            );
+            System.out.println("Items added: Burger, Fries");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        try {
+            order1.addItem("Soda", 0); // Invalid price
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        try {
+            order1.addItem("", 4.50); // Invalid item
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        order2.addMultipleItems(
+                new String[]{"Sandwich", "Juice", "Cookie", "Chips", "Salad"},
+                7.00, 4.00, 2.50, 3.45, 15.50
+        );
+
+        order3.addItem("Hotdog", 6.00);
+        order3.addItem("Water", 9.50);
+
+        System.out.println("\nOrder Results:");
+        System.out.println(order1.displayOrder());
+        System.out.println(order2.displayOrder());
+        System.out.println(order3.displayOrder());
+
+        System.out.println("\nTotal orders created: " + Order.getTotalOrders());
+
+        Order largest = order1;
+        if (order2.getTotalAmount() > largest.getTotalAmount()) largest = order2;
+        if (order3.getTotalAmount() > largest.getTotalAmount()) largest = order3;
+
+        System.out.printf("Largest order: %s ($%.2f)\n", largest.getCustomerName(), largest.getTotalAmount());
     }
 }
