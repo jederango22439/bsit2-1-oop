@@ -1,61 +1,32 @@
-public class FoodOrderingSystem {
+public class Main {
     public static void main(String[] args) {
-        System.out.println("=== Food Ordering System ===\n");
+        PetService service = new PetService();
 
-        System.out.println("Creating orders and adding items...");
+        System.out.println("Basic checkup: $" + service.calculateFee());
+        System.out.println("Checkup with vaccination: $" + service.calculateFee(true));
+        System.out.println("Full service: $" + service.calculateFee(true, true));
+        System.out.println("Emergency: $" + service.calculateFee("accident"));
 
-        Order order1 = new Order("Alice Johnson");
-        Order order2 = new Order("Bob Smith");
-        Order order3 = new Order("Charlie Brown");
+        System.out.println("\nWelcome to the Pet Clinic!");
+        System.out.println("==========================");
 
-        try {
-            order1.addItem("Pizza", 12.99);
-            System.out.println("Item 'Pizza' added successfully");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        Pet dog = new Dog("Buddy", 3);
+        Pet cat = new Cat("Whiskers", 2);
+        Pet bird = new Bird("Tweety", 1);
 
-        try {
-            order1.addMultipleItems(
-                    new String[]{"Burger", "Fries"},
-                    8.50, 3.25
-            );
-            System.out.println("Items added: Burger, Fries");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        dog.displayInfo();
+        dog.makeSound();
 
-        try {
-            order1.addItem("Soda", 0); // Invalid price
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        cat.displayInfo();
+        cat.makeSound();
 
-        try {
-            order1.addItem("", 4.50); // Invalid item
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        bird.displayInfo();
+        bird.makeSound();
 
-        order2.addMultipleItems(
-                new String[]{"Sandwich", "Juice", "Cookie", "Chips", "Salad"},
-                7.00, 4.00, 2.50, 3.45, 15.50
-        );
+        System.out.println("\nTraining Session Started!");
+        System.out.println("==========================");
 
-        order3.addItem("Hotdog", 6.00);
-        order3.addItem("Water", 9.50);
-
-        System.out.println("\nOrder Results:");
-        System.out.println(order1.displayOrder());
-        System.out.println(order2.displayOrder());
-        System.out.println(order3.displayOrder());
-
-        System.out.println("\nTotal orders created: " + Order.getTotalOrders());
-
-        Order largest = order1;
-        if (order2.getTotalAmount() > largest.getTotalAmount()) largest = order2;
-        if (order3.getTotalAmount() > largest.getTotalAmount()) largest = order3;
-
-        System.out.printf("Largest order: %s ($%.2f)\n", largest.getCustomerName(), largest.getTotalAmount());
+        ((Trainable) dog).performTrick();
+        ((Trainable) bird).performTrick();
     }
 }
